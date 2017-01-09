@@ -1,20 +1,20 @@
 # Action
 
-A platform to inform citizens and provide opportunities to affect policy.
+To start your Phoenix app:
 
-## User application
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * Install Node.js dependencies with `npm install`
+  * Start Phoenix endpoint with `mix phoenix.server`
 
-* sign up with email
-* create/delete subscriptions to organizations/issues
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Advocacy Organization application
+Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
-* create/update/delete list of issues
-* create/update action items
+## Learn more
 
-## Scheduler
-
-* store data
-  * action items
-  * subscriptions
-* send action items
+  * Official website: http://www.phoenixframework.org/
+  * Guides: http://phoenixframework.org/docs/overview
+  * Docs: https://hexdocs.pm/phoenix
+  * Mailing list: http://groups.google.com/group/phoenix-talk
+  * Source: https://github.com/phoenixframework/phoenix
