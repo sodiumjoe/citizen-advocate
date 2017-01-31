@@ -3,11 +3,11 @@
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate` [^postgres]
+  * Create and migrate your database with `mix ecto.create && mix ecto.migrate` <sup>[1](#postgres)</sup>
   * Install Node.js dependencies with `npm install`
   * Start Phoenix endpoint with `mix phoenix.server`
 
-[^postgres]: This assumes you have postgres running locally. On MacOS:
+<span id='postgres'>1.</span> This assumes you have postgres running locally. On MacOS:
 
 ```bash
 brew install postgres
