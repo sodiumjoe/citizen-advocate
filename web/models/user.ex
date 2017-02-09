@@ -2,6 +2,7 @@ defmodule Action.User do
   use Action.Web, :model
 
   schema "users" do
+    field :name, :string
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
@@ -15,8 +16,8 @@ defmodule Action.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:email, :password, :zip])
-    |> validate_required([:email, :password, :zip])
+    |> cast(params, [:name, :email, :password, :zip])
+    |> validate_required([:name, :email, :password, :zip])
     |> unique_constraint(:email)
   end
 
