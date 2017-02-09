@@ -17,7 +17,6 @@
         <ol class="breadcrumb text-right">
           <%= if @current_user do %>
             <li><%= @current_user.name %></li>
-            <li><%= @current_user.email %></li>
             <li>
               <%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %>
             </li>
