@@ -17,7 +17,9 @@ defmodule Action.Router do
   scope "/", Action do
     pipe_through :browser
     get "/", PageController, :index
-    resources "/users", UserController, only: [:index, :show, :new, :create]
+    get "/login", SessionController, :new
+    get "/register", UserController, :new
+    resources "/users", UserController, only: [:index, :show]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
