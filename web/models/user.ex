@@ -1,6 +1,8 @@
 defmodule Action.User do
   use Action.Web, :model
 
+  @email_regex ~r/^(?<user>[^\s]+)@(?<domain>[^\s]+\.[^\s]+)$/
+
   schema "users" do
     field :name, :string
     field :email, :string
@@ -18,6 +20,7 @@ defmodule Action.User do
     struct
     |> cast(params, [:name, :email, :password, :zip])
     |> validate_required([:name, :email, :password, :zip])
+    |> validate_email()
     |> unique_constraint(:email)
   end
 
@@ -27,6 +30,15 @@ defmodule Action.User do
     |> cast(params, ~w(password))
     |> validate_length(:password, min: 6, max: 100)
     |> put_pass_hash()
+  end
+
+  defp validate_email(changeset) do
+    email = get_field(changeset, :email)
+    if !is_nil(email) && Regex.match?(@email_regex, email) do
+      changeset
+    else
+      add_error(changeset, :email, "Invalid email address.")
+    end
   end
 
   defp put_pass_hash(changeset) do

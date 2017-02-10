@@ -19,7 +19,7 @@ defmodule Action.Router do
     get "/", PageController, :index
     get "/login", SessionController, :new
     get "/register", UserController, :new
-    resources "/users", UserController, only: [:index, :show]
+    resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
