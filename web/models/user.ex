@@ -1,7 +1,9 @@
 defmodule Action.User do
   use Action.Web, :model
+  require Logger
 
   @email_regex ~r/^(?<user>[^\s]+)@(?<domain>[^\s]+\.[^\s]+)$/
+  @congress_url "https://congress.api.sunlightfoundation.com/districts/locate"
 
   schema "users" do
     field :name, :string
@@ -20,6 +22,7 @@ defmodule Action.User do
     struct
     |> cast(params, [:name, :email, :password, :zip])
     |> validate_required([:name, :email, :password, :zip])
+    |> validate_zip()
     |> validate_email()
     |> unique_constraint(:email)
   end
@@ -38,6 +41,18 @@ defmodule Action.User do
       changeset
     else
       add_error(changeset, :email, "Invalid email address.")
+    end
+  end
+
+  def validate_zip(changeset) do
+    zip = get_field(changeset, :zip)
+    url = "#{@congress_url}?#{URI.encode_query(%{"zip" => zip})}"
+    with {:ok, %HTTPoison.Response{body: body}} <- HTTPoison.get(url),
+         {:ok, %{"count" => 1}} <- Poison.decode(body) do
+      changeset
+    else
+      _ ->
+        add_error(changeset, :zip, "Invalid zip code.")
     end
   end
 

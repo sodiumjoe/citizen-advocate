@@ -27,7 +27,8 @@ defmodule Action.Mixfile do
        :gettext,
        :phoenix_ecto,
        :postgrex,
-       :comeonin
+       :comeonin,
+       :httpoison
      ]]
   end
 
@@ -47,7 +48,9 @@ defmodule Action.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:comeonin, "~> 2.0"}]
+     {:comeonin, "~> 2.0"},
+     {:httpoison, "~> 0.9.0"},
+     {:poison, "~> 2.2"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
