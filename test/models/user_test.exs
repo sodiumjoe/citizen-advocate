@@ -3,7 +3,7 @@ defmodule Action.UserTest do
 
   alias Action.User
 
-  @valid_attrs %{email: "some content", password_hash: "some content", zip: "some content"}
+  @valid_attrs %{name: "some content", email: "test@testing.com", password: "some content", zip: "97212"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
