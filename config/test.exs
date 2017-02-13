@@ -17,3 +17,6 @@ config :action, Action.Repo,
   database: "action_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :action, :gpo,
+  http_client: Action.Test.HTTPClient

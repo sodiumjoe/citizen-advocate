@@ -50,7 +50,8 @@ defmodule Action.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.0"},
      {:httpoison, "~> 0.9.0"},
-     {:poison, "~> 2.2"}]
+     {:poison, "~> 2.2"},
+     {:sweet_xml, "~> 0.6.5"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
