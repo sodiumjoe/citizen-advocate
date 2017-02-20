@@ -19,7 +19,7 @@ defmodule ActionDataFetcher.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger, :poolboy],
+    [extra_applications: [:logger,:httpoison, :poolboy],
      mod: {ActionDataFetcher.Application, []}]
   end
 
@@ -38,7 +38,8 @@ defmodule ActionDataFetcher.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:poolboy, "~> 1.5"}
+      {:poolboy, "~> 1.5"},
+      {:httpoison, "~> 0.9.0"}
     ]
   end
 end

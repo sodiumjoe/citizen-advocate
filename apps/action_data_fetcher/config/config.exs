@@ -11,6 +11,8 @@ use Mix.Config
 # You can configure for your application as:
 #
 #     config :action_data_fetcher, key: :value
+config :action_data_fetcher, tmp_dir: "/tmp/"
+
 #
 # And access this configuration in your application as:
 #
