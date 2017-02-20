@@ -17,12 +17,18 @@ import_config "../apps/*/config/config.exs"
 #       metadata: [:user_id]
 
 config :action_data_fetcher, :pools,
-    gpo_fetchers: [
-      {:name, {:local, :gpo_fetchers}},
-      {:worker_module, ActionDataFetcher.GPO.Fetcher.Worker},
-      {:size, 5},
-      {:max_overflow, 5}
-    ]
+  gpo_fetchers: [
+    {:name, {:local, :gpo_fetchers}},
+    {:worker_module, ActionDataFetcher.GPO.Fetcher.Worker},
+    {:size, 5},
+    {:max_overflow, 5}
+  ],
+  gpo_parsers: [
+    {:name, {:local, :gpo_parsers}},
+    {:worker_module, ActionDataFetcher.GPO.Parser.Worker},
+    {:size, 100},
+    {:max_overflow, 100}
+  ]
 
 config :action_data_fetcher, :timeouts,
   gpo: 90_000

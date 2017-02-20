@@ -8,7 +8,21 @@ defmodule ActionDataFetcher.GPO.Supervisor do
   end
 
   def start_fetcher_pool do
-    case Supervisor.start_child(__MODULE__, poolboy_spec()) do
+    case Supervisor.start_child(__MODULE__, poolboy_fetcher_spec()) do
+      {:pool_started, pool_pid} ->
+        {:ok, pool_pid}
+      {:ok, pool_pid} ->
+        {:ok, pool_pid}
+      {:error, {:already_started, _}} ->
+        {:ok, :already_started}
+      other ->
+        IO.puts("TODO: HANDLE UNEXPECTED ERROR... #{inspect other}")
+        {:error, :nostart}
+    end
+  end
+
+  def start_parser_pool do
+    case Supervisor.start_child(__MODULE__, poolboy_parser_spec()) do
       {:pool_started, pool_pid} ->
         {:ok, pool_pid}
       {:ok, pool_pid} ->
@@ -32,10 +46,16 @@ defmodule ActionDataFetcher.GPO.Supervisor do
     {:reply, %{}, state}
   end
 
-  defp poolboy_spec do
+  defp poolboy_fetcher_spec do
     poolboy_config = Application.get_env(:action_data_fetcher, :pools)[:gpo_fetchers]
 
-    :poolboy.child_spec(:worker, poolboy_config, [])
+    :poolboy.child_spec(:gpo_fetchers, poolboy_config, [])
+  end
+
+  defp poolboy_parser_spec do
+    poolboy_config = Application.get_env(:action_data_fetcher, :pools)[:gpo_parsers]
+
+    :poolboy.child_spec(:gpo_parsers, poolboy_config, [])
   end
 
 end
