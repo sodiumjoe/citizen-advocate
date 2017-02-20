@@ -1,8 +1,10 @@
 defmodule ActionDataFetcher.GPO.Server do
   use GenServer
 
-  @timeout 90_000
+  @timeout Application.get_env(:action_data_fetcher, :timeouts)[:gpo]
   @tmp_dir Application.get_env(:action_data_fetcher, :tmp_dir)
+  @bill_types Application.get_env(:action_data_fetcher, :gpo)[:bill_types]
+  @congress Application.get_env(:action_data_fetcher, :gpo)[:congress]
 
   defmodule State do
     defstruct fetchers: nil, max_fetchers: nil, waiting: nil
@@ -29,14 +31,14 @@ defmodule ActionDataFetcher.GPO.Server do
   end
 
   def handle_call({:fetch_bills_data}, _from, state) do
-	tasks = Enum.map(["hr", "s", "hjres", "sjres"], fn(bill_type) ->
+	tasks = Enum.map(@bill_types, fn(bill_type) ->
 		Task.async(
           fn -> :poolboy.transaction(:gpo_fetchers,
 			&(GenServer.call(&1, 
               {
                 :fetch_bills, 
                 {
-                  :congress, 115, 
+                  :congress, @congress, 
                   :bill_type, bill_type
                 }
             }, @timeout)
@@ -48,8 +50,8 @@ defmodule ActionDataFetcher.GPO.Server do
 	results = tasks
            |> Enum.map(fn(task) ->
               case Task.await(task, @timeout) do
-                {:ok, {:data, zip, :congress, congress, :bill_type, bill_type}} ->
-                  write_zip_to_tmpdir(zip, congress, bill_type)
+                {:ok, {:data, zip, :congress, @congress, :bill_type, bill_type}} ->
+                  write_zip_to_tmpdir(zip, @congress, bill_type)
                 response -> response
               end
             end)

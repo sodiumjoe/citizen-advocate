@@ -15,3 +15,18 @@ import_config "../apps/*/config/config.exs"
 #       level: :info,
 #       format: "$date $time [$level] $metadata$message\n",
 #       metadata: [:user_id]
+
+config :action_data_fetcher, :pools,
+    gpo_fetchers: [
+      {:name, {:local, :gpo_fetchers}},
+      {:worker_module, ActionDataFetcher.GPO.Fetcher.Worker},
+      {:size, 5},
+      {:max_overflow, 5}
+    ]
+
+config :action_data_fetcher, :timeouts,
+  gpo: 90_000
+
+config :action_data_fetcher, :gpo,
+    bill_types: ["hr", "s", "hres", "hjres"],
+    congress: 115

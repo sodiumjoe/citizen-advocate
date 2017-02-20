@@ -32,17 +32,8 @@ defmodule ActionDataFetcher.GPO.Supervisor do
     {:reply, %{}, state}
   end
 
-  defp pool_name do
-    :gpo_fetchers
-  end
-
   defp poolboy_spec do
-    poolboy_config = [
-      {:name, {:local, pool_name()}},
-      {:worker_module, ActionDataFetcher.GPO.Fetcher.Worker},
-      {:size, 5},
-      {:max_overflow, 5}
-    ]
+    poolboy_config = Application.get_env(:action_data_fetcher, :pools)[:gpo_fetchers]
 
     :poolboy.child_spec(:worker, poolboy_config, [])
   end
