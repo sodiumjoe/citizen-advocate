@@ -7,13 +7,14 @@ defmodule ActionDataFetcher.GPO.Parser.Worker do
   end
   
   def handle_call({:parse_bill, {:filepath, bill_data_xml_path}}, _from, state) do
-
-    {:ok, binary} = File.read(Path.expand(bill_data_xml_path))
-
-    case parse_xml_data(binary) do
-		{:fatal, reason} ->	{:stop, reason, state}
-		bill_data -> {:reply, bill_data, state}
-	end
+    case File.read(Path.expand(bill_data_xml_path)) do
+        {:ok, binary} ->
+          case parse_xml_data(binary) do
+              {:fatal, reason} ->	{:stop, reason, state}
+              bill_data -> {:reply, bill_data, state}
+          end
+        {:error, reason} -> {:stop, reason, state}
+    end
   end
 
   defp parse_xml_data(xml) do
