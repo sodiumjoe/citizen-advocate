@@ -1,6 +1,6 @@
 defmodule ActionDataFetcherTest do
   use ExUnit.Case
-  doctest ActionDataFetcher
+  doctest ActionDataFetcher.Application
 
   test "the truth" do
     assert 1 + 1 == 2

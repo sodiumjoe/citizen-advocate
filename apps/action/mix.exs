@@ -56,7 +56,6 @@ defmodule Action.Mixfile do
      {:comeonin, "~> 2.0"},
      {:httpoison, "~> 0.9.0"},
      {:poison, "~> 2.2"},
-     {:sweet_xml, "~> 0.6.5"},
      {:action_data_fetcher, in_umbrella: true}]
   end
 

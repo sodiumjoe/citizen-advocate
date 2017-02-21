@@ -11,6 +11,7 @@ defmodule ActionDataFetcher.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     aliases: aliases(),
      deps: deps()]
   end
 
@@ -39,7 +40,15 @@ defmodule ActionDataFetcher.Mixfile do
   defp deps do
     [
       {:poolboy, "~> 1.5"},
-      {:httpoison, "~> 0.9.0"}
+      {:httpoison, "~> 0.9.0"},
+      {:sweet_xml, "~> 0.6.5"}
     ]
   end
+
+  defp aliases do
+    [
+      test: "test --no-start" # keep supervision trees from automagicallyl starting
+    ]
+  end
+
 end
