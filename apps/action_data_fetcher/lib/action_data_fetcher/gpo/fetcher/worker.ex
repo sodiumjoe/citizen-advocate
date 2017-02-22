@@ -1,7 +1,7 @@
 defmodule ActionDataFetcher.GPO.Fetcher.Worker do
   use GenServer
 
-  @http Application.get_env(:action, :gpo)[:http_client] || HTTPoison
+  @http Application.get_env(:action_data_fetcher, :gpo)[:http_client] || HTTPoison
 
   def start_link(stuff) do
     GenServer.start_link(__MODULE__, stuff)
@@ -12,8 +12,6 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
   end
 
   def handle_call({:fetch_bills, {:congress, congress, :bill_type, bill_type}}, _from, state) do
-    IO.puts("fetch_bills, #{congress}, #{bill_type}")
-
 	response = case fetch_zip(congress, bill_type) do
       {:ok, %HTTPoison.Response{status_code: 200, body: zip}} ->
         {:ok, {:data, zip, :congress, congress, :bill_type, bill_type}}
