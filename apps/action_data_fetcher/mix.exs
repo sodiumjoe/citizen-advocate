@@ -7,6 +7,7 @@ defmodule ActionDataFetcher.Mixfile do
      build_path: "../../_build",
      config_path: "../../config/config.exs",
      deps_path: "../../deps",
+     elixirc_paths: elixirc_paths(Mix.env),
      lockfile: "../../mix.lock",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
@@ -54,4 +55,12 @@ defmodule ActionDataFetcher.Mixfile do
     ]
   end
 
+  # tried to have .exs mocks, but they were not getting compiled in time,
+  # so resorted to suggestion here:
+  # https://medium.com/perplexinomicon-of-philosodad/mock-modules-and-where-to-find-them-319ae74c088b#.jmlpyku9a
+  defp elixirc_paths(:test) do
+    ["lib", "test/mocks"]
+  end
+
+  defp elixirc_paths(_), do: ["lib"]
 end

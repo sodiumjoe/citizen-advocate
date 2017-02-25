@@ -3,7 +3,35 @@ defmodule ActionDataFetch.GPO.Fetcher.WorkerTest do
 
   alias ActionDataFetcher.GPO.Fetcher.Worker, as: GPO 
 
-  test "responds with a :reply and Map of parsed data for succesful request" do
-    assert {:reply, {:error, :not_found}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "foo"}}, nil, %{})
+  test "responds with :not_found :error when making bad request"do
+    assert {:reply, {:error, :not_found}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "not_found"}}, nil, %{})
+  end
+
+  test "responds with :unknown :error when receiving bad response"do
+    assert {:reply, {:error, :unknown}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "unknown"}}, nil, %{})
+  end
+
+  test "responds with :nocreate :error when there is a problem making directory" do
+    assert {:reply, {:error, {:nocreate, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_create"}}, nil, %{})
+  end
+
+  test "responds with :nowrite :error when there is a problem writing zip" do
+    assert {:reply, {:error, {:nowrite, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_write"}}, nil, %{})
+  end
+
+  test "responds with :nounzip :error when there is a problem writing zip" do
+    assert {:reply, {:error, {:nounzip, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_unzip"}}, nil, %{})
+  end
+
+  test "responds with :unknown :nounzip :error when there is completely unexpected problem writing zip" do
+    assert {:reply, {:error, {:nounzip, :reason, :unknown, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_unzip_unknown"}}, nil, %{})
+  end
+
+  test "responds with :norm :error when unable to rm zip" do
+    assert {:reply, {:error, {:norm, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_rm"}}, nil, %{})
+  end
+
+  test "responds with :ok :path when all is well" do
+    assert {:reply, {:ok, _}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "good"}}, nil, %{})
   end
 end
