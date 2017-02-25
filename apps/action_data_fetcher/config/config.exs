@@ -22,6 +22,26 @@ config :action_data_fetcher, tmp_dir: "/tmp/"
 #
 #     config :logger, level: :info
 #
+config :action_data_fetcher, :pools,
+  gpo_fetchers: [
+    {:name, {:local, :gpo_fetchers}},
+    {:worker_module, ActionDataFetcher.GPO.Fetcher.Worker},
+    {:size, 5},
+    {:max_overflow, 5}
+  ],
+  gpo_parsers: [
+    {:name, {:local, :gpo_parsers}},
+    {:worker_module, ActionDataFetcher.GPO.Parser.Worker},
+    {:size, 100},
+    {:max_overflow, 100}
+  ]
+
+config :action_data_fetcher, :timeouts,
+  gpo: 90_000
+
+config :action_data_fetcher, :gpo,
+    bill_types: ["hr", "s", "hres", "hjres"],
+    congress: 115
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
