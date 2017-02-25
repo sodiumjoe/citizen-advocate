@@ -11,7 +11,7 @@ defmodule ActionDataFetcher.Test.HTTPClient do
     end
   end
 
-  def get(url, _timeout) do
+  def get(url, _options) do
     cond do
       String.contains?(url, "BILLSTATUS-115hr100.xml") -> {:ok, %HTTPoison.Response{status_code: 200, body: @gpo_bill_xml}}
       String.contains?(url, "BILLSTATUS-666-invalid.zip") -> {:ok, %HTTPoison.Response{status_code: 404}}
