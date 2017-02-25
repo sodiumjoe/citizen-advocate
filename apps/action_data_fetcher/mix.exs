@@ -11,6 +11,8 @@ defmodule ActionDataFetcher.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+	 test_coverage: [tool: ExCoveralls],
+	 preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
      aliases: aliases(),
      deps: deps()]
   end
@@ -41,7 +43,8 @@ defmodule ActionDataFetcher.Mixfile do
     [
       {:poolboy, "~> 1.5"},
       {:httpoison, "~> 0.9.0"},
-      {:sweet_xml, "~> 0.6.5"}
+      {:sweet_xml, "~> 0.6.5"},
+      {:excoveralls, "~> 0.6", only: :test}
     ]
   end
 
