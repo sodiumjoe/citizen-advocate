@@ -34,13 +34,14 @@ defmodule ActionDataFetcher.GPO.Server do
   def handle_call({:fetch_bills_data}, _from, state) do
 	tasks = Enum.map(@bill_types, &queue_fetch(&1))
 
-    # TODO: I think this is bunching up the steps...ideally we can process each as they come up...
 	results = tasks
-			|> Enum.map(fn(task) -> Task.await(task, @timeout) end)
-            |> Enum.map(&list_files(&1))
+			|> Enum.map(fn(task) ->
+              Task.await(task, @timeout)
+                |> list_files()
+                |> Enum.map(&queue_parse(&1))
+                |> Enum.map(fn(task) -> Task.await(task, @timeout) end)
+            end)
             |> List.flatten() # above creates list of file lists, so flatten it...
-            |> Enum.map(&queue_parse(&1))
-            |> Enum.map(fn(task) -> Task.await(task, @timeout)end)
             |> Enum.map(fn(response) ->
               response
             end)
