@@ -54,6 +54,8 @@ defmodule ActionDataFetcher.GPO.Server do
     {:noreply, state}
   end
 
+  ## Internal Helpers
+
   defp queue_fetch(bill_type) do
     Task.async(
       fn -> :poolboy.transaction(:gpo_fetchers,

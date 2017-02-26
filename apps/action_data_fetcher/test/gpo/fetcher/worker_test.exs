@@ -12,23 +12,23 @@ defmodule ActionDataFetch.GPO.Fetcher.WorkerTest do
   end
 
   test "responds with :nocreate :error when there is a problem making directory" do
-    assert {:reply, {:error, {:nocreate, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_create"}}, nil, %{})
+    assert {:reply, {:error, {:no_create, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_create"}}, nil, %{})
   end
 
   test "responds with :nowrite :error when there is a problem writing zip" do
-    assert {:reply, {:error, {:nowrite, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_write"}}, nil, %{})
+    assert {:reply, {:error, {:no_write, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_write"}}, nil, %{})
   end
 
   test "responds with :nounzip :error when there is a problem writing zip" do
-    assert {:reply, {:error, {:nounzip, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_unzip"}}, nil, %{})
+    assert {:reply, {:error, {:no_unzip, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_unzip"}}, nil, %{})
   end
 
   test "responds with :unknown :nounzip :error when there is completely unexpected problem writing zip" do
-    assert {:reply, {:error, {:nounzip, :reason, :unknown, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_unzip_unknown"}}, nil, %{})
+    assert {:reply, {:error, {:no_unzip, :reason, :unknown, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_unzip_unknown"}}, nil, %{})
   end
 
   test "responds with :norm :error when unable to rm zip" do
-    assert {:reply, {:error, {:norm, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_rm"}}, nil, %{})
+    assert {:reply, {:error, {:no_rm, :reason, _, :path, _}}, _} = GPO.handle_call({:fetch_bills, {:congress, 666, :bill_type, "no_rm"}}, nil, %{})
   end
 
   test "responds with :ok :path when all is well" do

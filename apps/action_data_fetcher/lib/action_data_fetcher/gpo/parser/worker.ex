@@ -2,6 +2,8 @@ defmodule ActionDataFetcher.GPO.Parser.Worker do
   use GenServer
   import SweetXml
 
+  ## Worker API
+
   def start_link(stuff) do
     GenServer.start_link(__MODULE__, stuff)
   end
@@ -16,6 +18,8 @@ defmodule ActionDataFetcher.GPO.Parser.Worker do
         {:error, reason} -> {:stop, reason, state}
     end
   end
+
+  ## Internal Helpers
 
   defp parse_xml_data(xml) do
     try do

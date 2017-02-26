@@ -10,6 +10,8 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
     defstruct [:congress, :bill_type, :zip_data]
   end
 
+  ## Worker API
+
   def start_link(stuff) do
     GenServer.start_link(__MODULE__, stuff)
   end
@@ -25,6 +27,8 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
   def handle_call({:fetch_bills, {:congress, congress, :bill_type, bill_type}}, _from, _state) do
     {:reply, fetch_bills(congress, bill_type), %FetchState{}}
   end
+
+  ## Internal Helpers
 
   defp fetch_bills(congress, bill_type) do
 	case fetch_zip(congress, bill_type) do
@@ -43,6 +47,7 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
   end
 
   defp generate_url(congress, bill_type) do
+    # TODO: should this also be configured?
     "https://www.gpo.gov/fdsys/bulkdata/BILLSTATUS/#{congress}/#{bill_type}/BILLSTATUS-#{congress}-#{bill_type}.zip"
   end
 
@@ -54,9 +59,9 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
     case @file_module.mkdir_p(path) do
       :ok -> case @file_module.write(file_path, zip_data, [:binary, :write]) do
         :ok -> {:ok, file_path}
-        {:error, reason} -> {:error, {:nowrite, :reason, reason, :path, file_path}}
+        {:error, reason} -> {:error, {:no_write, :reason, reason, :path, file_path}}
       end
-      {:error, reason} -> {:error, {:nocreate, :reason, reason, :path, path}}
+      {:error, reason} -> {:error, {:no_create, :reason, reason, :path, path}}
     end
   end
 
@@ -68,8 +73,8 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
     case @sys_module.cmd("unzip", [path, "-d", unzip_path]) do
       {_, 0} -> {:ok, {:zip_path, path, :unzip_dirpath, unzip_path}}
       # TODO: should this remove the zipfile and raise and exception?
-      {:error, reason} -> {:error, {:nounzip, :reason, reason, :path, unzip_path}}
-      _ -> {:error, {:nounzip, :reason, :unknown, :path, unzip_path}}
+      {:error, reason} -> {:error, {:no_unzip, :reason, reason, :path, unzip_path}}
+      _ -> {:error, {:no_unzip, :reason, :unknown, :path, unzip_path}}
     end
   end
 
@@ -80,7 +85,7 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
   defp cleanup({:ok, {:zip_path, zip_path, :unzip_dirpath, unzip_dirpath}}) do
     case @file_module.rm(zip_path) do
       :ok -> {:ok, unzip_dirpath}
-      {:error, reason} -> {:error, {:norm, :reason, reason, :path, zip_path}}
+      {:error, reason} -> {:error, {:no_rm, :reason, reason, :path, zip_path}}
     end
   end
 
