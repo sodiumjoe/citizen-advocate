@@ -5,10 +5,6 @@ defmodule ActionDataFetcher.GPO.Server do
   @bill_types Application.get_env(:action_data_fetcher, :gpo)[:bill_types]
   @congress Application.get_env(:action_data_fetcher, :gpo)[:congress]
 
-  defmodule State do
-    defstruct fetchers: nil, max_fetchers: nil, waiting: nil
-  end
-
   ## Client API
   
   def fetch_gpo_bill_data do
@@ -22,31 +18,28 @@ defmodule ActionDataFetcher.GPO.Server do
   ## Server API
 
   def init(nil) do
-    state = %State{fetchers: [], max_fetchers: 5, waiting: []}
 
     # TODO: currently, if the pools die, they are never restarted..
     send(self(), {:start_fetcher_pool})
     send(self(), {:start_parser_pool})
 
-    {:ok, state}
+    {:ok, %{}}
   end
 
   def handle_call({:fetch_bills_data}, _from, state) do
 	tasks = Enum.map(@bill_types, &queue_fetch(&1))
 
 	results = tasks
-			|> Enum.map(fn(task) ->
-              {:ok, path} = Task.await(task, @timeout)
-                results = list_files(path)
-                  |> Enum.map(&queue_parse(&1))
-                  |> Enum.map(fn(task) -> Task.await(task, @timeout) end)
-                File.rm_rf(path)
-                results
-            end)
-            |> List.flatten() # above creates list of file lists, so flatten it...
-            |> Enum.map(fn(response) ->
-              response
-            end)
+      |> Enum.map(fn(task) ->
+        {:ok, path} = Task.await(task, @timeout)
+        results = list_files(path)
+          |> Enum.map(&queue_parse(&1))
+          |> Enum.map(fn(task) -> Task.await(task, @timeout) end)
+        File.rm_rf(path)
+        results
+      end)
+      |> List.flatten() # above creates list of result lists, so flatten it...
+      |> Enum.map(fn(response) -> response end)
 
     {:reply, results, state}
   end
