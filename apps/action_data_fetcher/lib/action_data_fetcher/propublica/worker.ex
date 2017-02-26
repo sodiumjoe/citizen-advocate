@@ -1,4 +1,4 @@
-defmodule ActionDataFetch.Propublica.Worker do
+defmodule ActionDataFetcher.Propublica.Worker do
   use GenServer
 
   @api_key Application.get_env(:action_data_fetch, :propublica)[:api_key]
@@ -54,6 +54,7 @@ defmodule ActionDataFetch.Propublica.Worker do
   end
 
   defp pluck_member_data(response_body) do
+    # TODO: do we want less than what Propublica provides?
     {:ok, %{
       "results" => [%{"members" => members, "num_results" => _result_count}|_]
       }} = Poison.Parser.parse(response_body)
@@ -62,6 +63,7 @@ defmodule ActionDataFetch.Propublica.Worker do
   end
 
   defp pluck_committee_data(response_body) do
+    # TODO: do we want less than what Propublica provides?
     {:ok, %{
       "results" => [%{"committees" => committees, "num_results" => _result_count}|_]
       }} = Poison.Parser.parse(response_body)

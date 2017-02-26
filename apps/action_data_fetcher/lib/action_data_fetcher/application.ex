@@ -10,7 +10,9 @@ defmodule ActionDataFetcher.Application do
 
     children = [
       supervisor(ActionDataFetcher.GPO.Supervisor, []),
-      worker(ActionDataFetcher.GPO.Server, [])
+      worker(ActionDataFetcher.GPO.Server, []),
+      supervisor(ActionDataFetcher.Propublica.Supervisor, []),
+      worker(ActionDataFetcher.Propublica.Server, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
