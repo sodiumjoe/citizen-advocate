@@ -27,9 +27,9 @@ defmodule ActionDataFetcher.GPO.Server do
   end
 
   def handle_call({:fetch_bills_data}, _from, state) do
-	tasks = Enum.map(@bill_types, &queue_fetch(&1))
+    tasks = Enum.map(@bill_types, &queue_fetch(&1))
 
-	results = tasks
+    results = tasks
       |> Enum.map(fn(task) ->
         {:ok, path} = Task.await(task, @timeout)
         results = list_files(path)
