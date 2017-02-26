@@ -48,7 +48,7 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
 
   defp write_zip_to_tmpdir(congress, bill_type, zip_data) do
     date_time_str = String.replace(DateTime.to_string(DateTime.utc_now()), " ", "_")
-    path          = Path.join([@tmp_dir, "bill_data", Integer.to_string(congress), bill_type])
+    path          = Path.join([@tmp_dir, Integer.to_string(congress), bill_type])
     file_path     = Path.join([path, "#{date_time_str}.zip"])
 
     case @file_module.mkdir_p(path) do
