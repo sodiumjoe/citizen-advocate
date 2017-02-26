@@ -10,7 +10,7 @@ defmodule ActionDataFetcher.GPO.Parser.Worker do
     case File.read(Path.expand(bill_data_xml_path)) do
         {:ok, binary} ->
           case parse_xml_data(binary) do
-              {:fatal, reason} ->	{:stop, reason, state}
+              {:fatal, reason} -> {:stop, reason, state}
               bill_data -> {:reply, bill_data, state}
           end
         {:error, reason} -> {:stop, reason, state}
