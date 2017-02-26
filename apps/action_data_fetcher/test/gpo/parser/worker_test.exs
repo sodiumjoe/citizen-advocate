@@ -1,6 +1,8 @@
 defmodule ActionDataFetch.GPO.Parser.WorkerTest do
   use ExUnit.Case, async: true
 
+  import ExUnit.CaptureLog
+
   alias ActionDataFetcher.GPO.Parser.Worker, as: GPO 
   
   @valid_gpo_bill_fixture_path Path.join([__DIR__, "../../fixtures/BILLSTATUS-115hr100.xml"])
@@ -22,9 +24,11 @@ defmodule ActionDataFetch.GPO.Parser.WorkerTest do
   end
 
   test "replies with :stop for invalid request" do
-    {:stop, reason, _} = GPO.handle_call({:parse_bill, {:filepath, @invalid_gpo_bill_fixture_path}}, nil, %{})
+    capture_log fn ->
+      {:stop, reason, _} = GPO.handle_call({:parse_bill, {:filepath, @invalid_gpo_bill_fixture_path}}, nil, %{})
 
-    assert {{:endtag_does_not_match, _}, _, _, _} = reason
+      assert {{:endtag_does_not_match, _}, _, _, _} = reason
+    end
   end
 
   test "replies with :stop for missing file" do
