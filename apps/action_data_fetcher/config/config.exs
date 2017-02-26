@@ -34,14 +34,22 @@ config :action_data_fetcher, :pools,
     {:worker_module, ActionDataFetcher.GPO.Parser.Worker},
     {:size, 100},
     {:max_overflow, 100}
+  ],
+  propublica_fetchers: [
+    {:name, {:local, :propublica_fetchers}},
+    {:worker_module, ActionDataFetcher.Propublica.Worker},
+    {:size, 4},
+    {:max_overflow, 4}
   ]
 
 config :action_data_fetcher, :timeouts,
-  gpo: 90_000
+  gpo: 90_000,
+  propublica: 50_000
+
+config :action_data_fetcher, :congress, 115
 
 config :action_data_fetcher, :gpo,
-    bill_types: ["hr", "s", "hres", "hjres"],
-    congress: 115
+    bill_types: ["hr", "s", "hres", "hjres"]
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment

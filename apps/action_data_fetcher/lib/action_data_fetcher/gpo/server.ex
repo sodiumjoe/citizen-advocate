@@ -3,7 +3,7 @@ defmodule ActionDataFetcher.GPO.Server do
 
   @timeout Application.get_env(:action_data_fetcher, :timeouts)[:gpo]
   @bill_types Application.get_env(:action_data_fetcher, :gpo)[:bill_types]
-  @congress Application.get_env(:action_data_fetcher, :gpo)[:congress]
+  @congress Application.get_env(:action_data_fetcher, :congress)
 
   ## Client API
   
