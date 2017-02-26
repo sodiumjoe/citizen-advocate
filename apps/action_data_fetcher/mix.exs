@@ -51,7 +51,7 @@ defmodule ActionDataFetcher.Mixfile do
 
   defp aliases do
     [
-      test: "test --no-start" # keep supervision trees from automagicallyl starting
+      test: "test --no-start" # keep supervision trees from automagically starting
     ]
   end
 

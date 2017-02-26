@@ -7,7 +7,7 @@ defmodule ActionDataFetch.GPO.Parser.WorkerTest do
   @invalid_gpo_bill_fixture_path Path.join([__DIR__, "../../fixtures/BILLSTATUS-115hr100.invalid.xml"])
 
   test "responds with a :reply and Map of parsed data for succesful request" do
-    {:reply, {:data, bill_data, :path, path}, _} = GPO.handle_call({:parse_bill, {:filepath, @valid_gpo_bill_fixture_path}}, nil, %{})
+    {:reply, bill_data, _} = GPO.handle_call({:parse_bill, {:filepath, @valid_gpo_bill_fixture_path}}, nil, %{})
 
     assert %{
 		actions: _,
@@ -19,8 +19,6 @@ defmodule ActionDataFetch.GPO.Parser.WorkerTest do
 		title: _,
 		update_date: _
 	  } = bill_data
-
-    assert path == @valid_gpo_bill_fixture_path
   end
 
   test "replies with :stop for invalid request" do
