@@ -8,11 +8,11 @@ defmodule ActionDataFetcher.GPO.Supervisor do
   end
 
   def start_fetcher_pool do
-	start_pool(poolboy_fetcher_spec())
+    start_pool(poolboy_fetcher_spec())
   end
 
   def start_parser_pool do
-	start_pool(poolboy_parser_spec())
+    start_pool(poolboy_parser_spec())
   end
 
   ## Server API
