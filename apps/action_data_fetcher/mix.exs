@@ -50,9 +50,7 @@ defmodule ActionDataFetcher.Mixfile do
   end
 
   defp aliases do
-    [
-      test: "test --no-start" # keep supervision trees from automagically starting
-    ]
+    []
   end
 
   # tried to have .exs mocks, but they were not getting compiled in time,
