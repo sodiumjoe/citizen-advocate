@@ -36,10 +36,12 @@ defmodule ActionDataFetcher.GPO.Server do
 
 	results = tasks
 			|> Enum.map(fn(task) ->
-              Task.await(task, @timeout)
-                |> list_files()
-                |> Enum.map(&queue_parse(&1))
-                |> Enum.map(fn(task) -> Task.await(task, @timeout) end)
+              {:ok, path} = Task.await(task, @timeout)
+                results = list_files(path)
+                  |> Enum.map(&queue_parse(&1))
+                  |> Enum.map(fn(task) -> Task.await(task, @timeout) end)
+                File.rm_rf(path)
+                results
             end)
             |> List.flatten() # above creates list of file lists, so flatten it...
             |> Enum.map(fn(response) ->
@@ -75,10 +77,9 @@ defmodule ActionDataFetcher.GPO.Server do
     end)
   end
 
-  defp list_files({:ok, path}) do
+  defp list_files(path) do
     {:ok, filenames} = File.ls(path)
     filenames
-    |> Enum.map(fn(filename) -> Path.join([path, filename]) end)
+      |> Enum.map(fn(filename) -> Path.join([path, filename]) end)
   end
-
 end
