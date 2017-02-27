@@ -1,6 +1,7 @@
 defmodule ActionDataFetcher.Propublica.Worker do
   use GenServer
 
+  @http Application.get_env(:action_data_fetcher, :propublica)[:http_client]
   @api_key Application.get_env(:action_data_fetch, :propublica)[:api_key]
 
   ## Client API
@@ -48,18 +49,26 @@ defmodule ActionDataFetcher.Propublica.Worker do
   defp fetch_json(url) do
     headers = [ "X-API-Key": @api_key ]
 
-    {:ok, response} = HTTPoison.get(url, headers, ssl: [verify: :verify_none])
-
-    response.body
+    case @http.get(url, headers, ssl: [verify: :verify_none]) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> body
+      {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, :not_found}
+      {:error, reason} -> {:error, reason}
+      _ -> {:error, :unknown}
+    end
   end
 
   defp pluck_member_data(response_body) do
-    # TODO: do we want less than what Propublica provides?
-    {:ok, %{
-      "results" => [%{"members" => members, "num_results" => _result_count}|_]
-      }} = Poison.Parser.parse(response_body)
+    case response_body do
+      {:error, reason} -> {:error, reason}
+      json -> case Poison.Parser.parse(json) do
+        {:ok, %{ "results" =>
+          # TODO: do we want less than what Propublica provides?
+          [%{"members" => members, "num_results" => _result_count}|_]
+        }} -> members
+        {:error, reason} -> {:error, reason}
+      end
+    end
 
-    members
   end
 
   defp pluck_committee_data(response_body) do
@@ -71,4 +80,4 @@ defmodule ActionDataFetcher.Propublica.Worker do
     committees
   end
 
-end  
+end

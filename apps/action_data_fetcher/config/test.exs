@@ -5,3 +5,6 @@ config :action_data_fetcher, :gpo,
   file_module: ActionDataFetcher.Test.FileModule,
   sys_module: ActionDataFetcher.Test.System,
   date_time: ActionDataFetcher.Test.DateTime
+
+config :action_data_fetcher, :propublica,
+  http_client: ActionDataFetcher.Test.HTTPClient
