@@ -4,8 +4,8 @@ defmodule ActionDataFetcher.GPO.Parser.Worker do
 
   ## Worker API
 
-  def start_link(stuff) do
-    GenServer.start_link(__MODULE__, stuff)
+  def start_link(_args) do
+    GenServer.start_link(__MODULE__, :ok)
   end
   
   def handle_call({:parse_bill, {:filepath, bill_data_xml_path}}, _from, state) do

@@ -1,13 +1,13 @@
 defmodule ActionDataFetcher.Propublica.Worker do
   use GenServer
 
-  @http Application.get_env(:action_data_fetcher, :propublica)[:http_client]
-  @api_key Application.get_env(:action_data_fetch, :propublica)[:api_key]
+  @http Application.get_env(:action_data_fetcher, :propublica)[:http_client] || HTTPoison
+  @api_key Application.get_env(:action_data_fetch, :propublica)[:api_key] 
 
   ## Client API
 
-  def start_link(stuff) do
-    GenServer.start_link(__MODULE__, stuff)
+  def start_link(_args) do
+    GenServer.start_link(__MODULE__, :ok)
   end
 
   def fetch_members(pid, congress, chamber) do

@@ -12,15 +12,15 @@ defmodule ActionDataFetcher.GPO.Fetcher.Worker do
 
   ## Worker API
 
-  def start_link(stuff) do
-    GenServer.start_link(__MODULE__, stuff)
+  def start_link(_args) do
+    GenServer.start_link(__MODULE__, :ok)
   end
   
   def fetch_bills(pid, congress, bill_type) do
     GenServer.call(pid, {:fetch_bills, {:congress, congress, :bill_type, bill_type}})
   end
 
-  def init(_state) do
+  def init(:ok) do
     {:ok, %FetchState{}}
   end
 
