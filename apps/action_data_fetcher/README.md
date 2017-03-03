@@ -1,6 +1,6 @@
 # ActionDataFetcher
 
-Data Fetching applicaiton to supply bill/committee/member data for CitizenAdvocate
+Data fetching application to supply bill/committee/member data for CitizenAdvocate
 
 ## Installation
 

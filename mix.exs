@@ -1,4 +1,4 @@
-defmodule CitizenAdvocate.Mixfile do
+defmodule CitizenAdvocateUmbrella.Mixfile do
   use Mix.Project
 
   def project do
