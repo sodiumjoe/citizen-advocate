@@ -1,4 +1,4 @@
-# Action
+# CitizenAdvocate
 
 To start your Phoenix app:
 
