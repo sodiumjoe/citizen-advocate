@@ -10,6 +10,11 @@ To start your Phoenix app:
 <span id='postgres'>1.</span> This assumes you have postgres running locally. On MacOS:
 
 ```bash
+# If you have docker
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
+
+# or
+
 brew install postgres
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 createuser -d postgres
