@@ -8,12 +8,12 @@
 erl_crash.dump
 
 # Static artifacts
-/apps/action/node_modules
+/apps/citizen_advocate/node_modules
 
 # Since we are building assets from web/static,
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
-/apps/action/priv/static/
+/apps/citizen_advocate/priv/static/
 
 cover
 
