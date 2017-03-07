@@ -33,7 +33,8 @@ defmodule CitizenAdvocate.Mixfile do
        :postgrex,
        :comeonin,
        :httpoison,
-       :citizen_advocate_data_fetcher
+       :citizen_advocate_data_fetcher,
+       :citizen_advocate_notifier
      ]]
   end
 
@@ -56,7 +57,8 @@ defmodule CitizenAdvocate.Mixfile do
      {:comeonin, "~> 2.0"},
      {:httpoison, "~> 0.9.0"},
      {:poison, "~> 2.2"},
-     {:citizen_advocate_data_fetcher, in_umbrella: true}]
+     {:citizen_advocate_data_fetcher, in_umbrella: true},
+     {:citizen_advocate_notifier, in_umbrella: true}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
