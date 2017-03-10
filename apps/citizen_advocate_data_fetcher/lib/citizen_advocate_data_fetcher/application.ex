@@ -20,4 +20,16 @@ defmodule CitizenAdvocateDataFetcher.Application do
     opts = [strategy: :one_for_one, name: CitizenAdvocateDataFetcher.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  def fetch_bills do
+    CitizenAdvocateDataFetcher.GPO.Server.fetch_gpo_bill_data
+  end
+
+  def fetch_members do
+    CitizenAdvocateDataFetcher.Propublica.Server.fetch_member_data
+  end
+
+  def fetch_committes do
+    CitizenAdvocateDataFetcher.Propublica.Server.fetch_committee_data
+  end
 end
