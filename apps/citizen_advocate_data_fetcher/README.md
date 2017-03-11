@@ -1,9 +1,6 @@
 # CitizenAdvocateDataFetcher
 
-<<<<<<< Updated upstream
 Data fetching application to supply bill/committee/member data for CitizenAdvocate
-=======
-Data fetching application to supply bill/committee/member data for citizen-advocate
 
 ```bash
 $ iex -S mix
@@ -75,8 +72,6 @@ iex(3)> CitizenAdvocateDataFetcher.Application.fetch_committees
     "republican_rss" => "", "url" => "http://www.aging.senate.gov/"}]]
 iex(4)>
 ```
->>>>>>> Stashed changes
-
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
