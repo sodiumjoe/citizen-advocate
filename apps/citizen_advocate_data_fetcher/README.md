@@ -7,11 +7,7 @@ $ iex -S mix
 Erlang/OTP 19 [erts-8.2] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
 
 Interactive Elixir (1.4.0) - press Ctrl+C to exit (type h() ENTER for help)
-<<<<<<< HEAD
-iex(1)> CitizenAdvocateDataFetcher.GPO.Server.fetch_gpo_bill_data
-=======
 iex(1)> CitizenAdvocateDataFetcher.Application.fetch_bills
->>>>>>> master
 [%{actions: [%{action_code: "", action_date: "2017-01-04",
       committee: %{name: "Highways and Transit Subcommittee",
         system_code: "hspw12"},
@@ -43,11 +39,7 @@ iex(1)> CitizenAdvocateDataFetcher.Application.fetch_bills
  %{actions: [%{action_code: "H11100", ...}, %{...}, ...], bill_number: "1041",
    bill_type: "HR", ...}, %{actions: [%{...}, ...], bill_number: "1042", ...},
  %{actions: [...], ...}, %{...}, ...]
-<<<<<<< HEAD
-iex(2)> CitizenAdvocateDataFetcher.Propublica.Server.fetch_member_data
-=======
 iex(2)> CitizenAdvocateDataFetcher.Application.fetch_members
->>>>>>> master
 [[%{"api_uri" => "https://api.propublica.org/congress/v1/members/A000055.json",
     "district" => "4", "domain" => "aderholt.house.gov", "dw_nominate" => "",
     "facebook_account" => "RobertAderholt", "facebook_id" => "19787529402",
@@ -62,11 +54,7 @@ iex(2)> CitizenAdvocateDataFetcher.Application.fetch_members
 	...
   %{"api_uri" => "https://api.propublica.org/congress/v1/members/I000024.json",
     ...}, %{...}, ...]]
-<<<<<<< HEAD
-iex(3)> CitizenAdvocateDataFetcher.Propublica.Server.fetch_committee_data
-=======
 iex(3)> CitizenAdvocateDataFetcher.Application.fetch_committees
->>>>>>> master
 [[%{"api_uri" => "https://api.propublica.org/congress/v1/115/house/committees/HSHA.json",
     "chair" => "Gregg Harper", "chair_id" => "H001045", "chair_party" => "R",
     "chair_state" => "MS",
