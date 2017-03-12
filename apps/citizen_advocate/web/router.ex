@@ -15,12 +15,20 @@ defmodule CitizenAdvocate.Router do
   end
 
   scope "/", CitizenAdvocate do
+
     pipe_through :browser
+
     get "/", PageController, :index
     get "/login", SessionController, :new
     get "/register", UserController, :new
-    resources "/users", UserController, only: [:index, :show, :new, :create]
-    resources "/sessions", SessionController, only: [:new, :create, :delete]
+
+    get "/user/confirmation", UserController, :confirm
+    get "/user/confirmation_instructions", UserController, :confirmation_instructions
+    post "/user/confirmation_instructions", UserController, :resend_confirmation_instructions
+    resources "/user", UserController, only: [:index, :show, :new, :create]
+
+    resources "/session", SessionController, only: [:new, :create, :delete]
+
   end
 
   # Other scopes may use custom stacks.

@@ -1,0 +1,7 @@
+<h1>Confirm your email address</h1>
+
+<%= form_for @conn, user_path(@conn, :confirmation_instructions), [as: :confirm], fn -> %>
+  <div class="actions">
+    <%= submit "Resend confirmation  mail" %>
+  </div>
+<% end %>

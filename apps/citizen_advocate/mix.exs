@@ -33,7 +33,8 @@ defmodule CitizenAdvocate.Mixfile do
        :postgrex,
        :comeonin,
        :httpoison,
-       :citizen_advocate_data_fetcher
+       :citizen_advocate_data_fetcher,
+       :bamboo
      ]]
   end
 
@@ -54,8 +55,10 @@ defmodule CitizenAdvocate.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.0"},
-     {:httpoison, "~> 0.9.0"},
+     {:httpoison, "~> 0.11.0"},
      {:poison, "~> 2.2"},
+     {:bamboo, "~> 0.8"},
+     {:secure_random, "~> 0.5"},
      {:citizen_advocate_data_fetcher, in_umbrella: true}]
   end
 

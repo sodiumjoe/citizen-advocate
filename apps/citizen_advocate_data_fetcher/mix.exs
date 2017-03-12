@@ -43,7 +43,7 @@ defmodule CitizenAdvocateDataFetcher.Mixfile do
   defp deps do
     [
       {:poolboy, "~> 1.5"},
-      {:httpoison, "~> 0.9.0"},
+      {:httpoison, "~> 0.11.0"},
       {:sweet_xml, "~> 0.6.5"},
       {:poison, "~> 2.2"},
       {:excoveralls, "~> 0.6", only: :test}
