@@ -1,0 +1,9 @@
+Hello <%= @email %>!
+
+Welcome to Citizen Advocate!
+
+Click <a href="<%= @url %>">here</a> to confirm your email address.
+
+Or, copy and paste the following into your browser:
+
+<pre><code><%= @url %></code></pre>

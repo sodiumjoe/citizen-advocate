@@ -1,6 +1,6 @@
 defmodule CitizenAdvocate.User do
   use CitizenAdvocate.Web, :model
-  require Logger
+  import Comeonin.Bcrypt, only: [checkpw: 2, hashpwsalt: 1]
 
   @email_regex ~r/^(?<user>[^\s]+)@(?<domain>[^\s]+\.[^\s]+)$/
   @congress_url "https://congress.api.sunlightfoundation.com/districts/locate"
@@ -11,6 +11,8 @@ defmodule CitizenAdvocate.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :zip, :string
+    field :confirmed_at, Ecto.DateTime
+    field :hashed_confirmation_token, :string
 
     timestamps()
   end
@@ -23,6 +25,7 @@ defmodule CitizenAdvocate.User do
     |> cast(params, [:name, :email, :password, :zip])
     |> validate_required([:name, :email, :password, :zip])
     |> validate_zip()
+    |> downcase_email()
     |> validate_email()
     |> unique_constraint(:email)
   end
@@ -46,7 +49,8 @@ defmodule CitizenAdvocate.User do
 
   def validate_zip(changeset) do
     zip = get_field(changeset, :zip)
-    url = "#{@congress_url}?#{URI.encode_query(%{"zip" => zip})}"
+    query = %{"zip" => zip}
+    url = "#{@congress_url}?#{URI.encode_query(query)}"
     with {:ok, %HTTPoison.Response{body: body}} <- HTTPoison.get(url),
          {:ok, %{"count" => 1}} <- Poison.decode(body) do
       changeset
@@ -59,10 +63,46 @@ defmodule CitizenAdvocate.User do
   defp put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: password}} ->
-        put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(password))
+        put_change(changeset, :password_hash, hashpwsalt(password))
       _ ->
         changeset
     end
+  end
+
+  defp downcase_email(changeset) do
+    email = get_change(changeset, :email)
+    if is_nil(email) do
+      changeset
+    else
+      put_change(changeset, :email, String.downcase(email))
+    end
+  end
+
+  def confirmation_changeset(user, params = %{"token" => token}) do
+    user
+    |> cast(params, [])
+    |> put_change(:hashed_confirmation_token, nil)
+    |> put_change(:confirmed_at, Ecto.DateTime.utc())
+    |> validate_token(token)
+  end
+
+  defp validate_token(changeset, token) do
+    if checkpw(token, changeset.data.hashed_confirmation_token) do
+      changeset
+    else
+      add_error(changeset, :confirmation_token, "invalid")
+    end
+  end
+
+  def confirmation_needed_changeset(changeset) do
+    token = SecureRandom.urlsafe_base64(64)
+    hashed_token = hashpwsalt(token)
+
+    changeset =
+      changeset
+      |> put_change(:hashed_confirmation_token, hashed_token)
+
+    {token, changeset}
   end
 
 end

@@ -1,0 +1,7 @@
+Hello <%= @email %>!
+
+Welcome to Citizen Advocate!
+
+Copy and paste the following into your browser to confirm your email address:
+
+<%= @url %> 
