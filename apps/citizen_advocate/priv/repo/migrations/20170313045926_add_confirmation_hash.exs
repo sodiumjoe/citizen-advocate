@@ -1,4 +1,4 @@
-defmodule CitizenAdvocate.Repo.Migrations.CreateUser do
+defmodule CitizenAdvocate.Repo.Migrations.AddConfirmationHash do
   use Ecto.Migration
 
   def change do
