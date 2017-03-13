@@ -1,5 +1,6 @@
 defmodule CitizenAdvocate.User do
   use CitizenAdvocate.Web, :model
+  import Comeonin.Bcrypt, only: [checkpw: 2, hashpwsalt: 1]
 
   @email_regex ~r/^(?<user>[^\s]+)@(?<domain>[^\s]+\.[^\s]+)$/
   @congress_url "https://congress.api.sunlightfoundation.com/districts/locate"
@@ -62,7 +63,7 @@ defmodule CitizenAdvocate.User do
   defp put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: password}} ->
-        put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(password))
+        put_change(changeset, :password_hash, hashpwsalt(password))
       _ ->
         changeset
     end
@@ -85,10 +86,8 @@ defmodule CitizenAdvocate.User do
     |> validate_token(token)
   end
 
-  alias Comeonin.Bcrypt
-
   defp validate_token(changeset, token) do
-    if Bcrypt.checkpw(token, changeset.data.hashed_confirmation_token) do
+    if checkpw(token, changeset.data.hashed_confirmation_token) do
       changeset
     else
       add_error(changeset, :confirmation_token, "invalid")
@@ -97,7 +96,7 @@ defmodule CitizenAdvocate.User do
 
   def confirmation_needed_changeset(changeset) do
     token = SecureRandom.urlsafe_base64(64)
-    hashed_token = Comeonin.Bcrypt.hashpwsalt(token)
+    hashed_token = hashpwsalt(token)
 
     changeset =
       changeset
